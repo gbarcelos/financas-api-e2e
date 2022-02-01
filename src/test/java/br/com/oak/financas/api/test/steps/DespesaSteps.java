@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
 
-import static br.com.oak.financas.api.test.fixtures.FinancasTestFixture.buildLancamentoInput;
+import static br.com.oak.financas.api.test.fixtures.FinancasTestFixture.buildDespesaInput;
 import static br.com.oak.financas.api.test.utils.Constants.OBJECT_ERROR;
 import static br.com.oak.financas.api.test.utils.DateUtils.convertLocalDateToString;
 import static br.com.oak.financas.api.test.utils.FinancasApiPathConstants.DESPESA_V1_PATH;
@@ -65,20 +65,20 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
 
   @Given("uma despesa valida")
   public void uma_despesa_valida() {
-    scenarioContext.setLancamentoInput(buildLancamentoInput());
+    scenarioContext.setDespesaInput(buildDespesaInput());
   }
 
   @Given("uma despesa valida e criada")
   public void uma_despesa_valida_e_criada() {
-    scenarioContext.setLancamentoInput(buildLancamentoInput());
+    scenarioContext.setDespesaInput(buildDespesaInput());
     scenarioContext.setLancamentoDto(
-        givenRequestSpecification().criarDespesa(scenarioContext.getLancamentoInput()));
+        givenRequestSpecification().criarDespesa(scenarioContext.getDespesaInput()));
   }
 
   @When("criar uma despesa")
   public void criar_uma_despesa() {
     scenarioContext.setLancamentoDto(
-        givenRequestSpecification().criarDespesa(scenarioContext.getLancamentoInput()));
+        givenRequestSpecification().criarDespesa(scenarioContext.getDespesaInput()));
   }
 
   @When("tentar criar uma despesa com a mesma descricao e no mesmo mes")
@@ -87,7 +87,7 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
     JsonPath jsonPath =
         givenRequestSpecification()
             .returnRequestSpecification()
-            .body(scenarioContext.getLancamentoInput())
+            .body(scenarioContext.getDespesaInput())
             .expect()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .when()
@@ -101,12 +101,12 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
   @When("tentar criar uma despesa com uma descricao nulla")
   public void tentar_criar_uma_despesa_com_uma_descricao_nulla() {
 
-    scenarioContext.getLancamentoInput().setDescricao(null);
+    scenarioContext.getDespesaInput().setDescricao(null);
 
     JsonPath jsonPath =
         givenRequestSpecification()
             .returnRequestSpecification()
-            .body(scenarioContext.getLancamentoInput())
+            .body(scenarioContext.getDespesaInput())
             .expect()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .when()
@@ -120,12 +120,12 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
   @When("tentar criar uma despesa com uma descricao em branco")
   public void tentar_criar_uma_despesa_com_uma_descricao_em_branco() {
 
-    scenarioContext.getLancamentoInput().setDescricao("");
+    scenarioContext.getDespesaInput().setDescricao("");
 
     JsonPath jsonPath =
         givenRequestSpecification()
             .returnRequestSpecification()
-            .body(scenarioContext.getLancamentoInput())
+            .body(scenarioContext.getDespesaInput())
             .expect()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .when()
@@ -139,12 +139,12 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
   @When("tentar criar uma despesa com uma data nulla")
   public void tentar_criar_uma_despesa_com_uma_data_nulla() {
 
-    scenarioContext.getLancamentoInput().setData(null);
+    scenarioContext.getDespesaInput().setData(null);
 
     JsonPath jsonPath =
         givenRequestSpecification()
             .returnRequestSpecification()
-            .body(scenarioContext.getLancamentoInput())
+            .body(scenarioContext.getDespesaInput())
             .expect()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .when()
@@ -158,12 +158,12 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
   @When("tentar criar uma despesa com uma data invalida")
   public void tentar_criar_uma_despesa_com_uma_data_invalida() {
 
-    scenarioContext.getLancamentoInput().setData("01/20/2022");
+    scenarioContext.getDespesaInput().setData("01/20/2022");
 
     JsonPath jsonPath =
         givenRequestSpecification()
             .returnRequestSpecification()
-            .body(scenarioContext.getLancamentoInput())
+            .body(scenarioContext.getDespesaInput())
             .expect()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .when()
@@ -177,12 +177,12 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
   @When("tentar criar uma despesa com um valor nullo")
   public void tentar_criar_uma_despesa_com_um_valor_nullo() {
 
-    scenarioContext.getLancamentoInput().setValor(null);
+    scenarioContext.getDespesaInput().setValor(null);
 
     JsonPath jsonPath =
         givenRequestSpecification()
             .returnRequestSpecification()
-            .body(scenarioContext.getLancamentoInput())
+            .body(scenarioContext.getDespesaInput())
             .expect()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .when()
@@ -207,6 +207,24 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
 
     givenRequestSpecification()
         .atualizarDespesa(scenarioContext.getLancamentoDto().getId(), lancamentoInput);
+  }
+
+  @When("criar uma despesa com uma categoria nulla")
+  public void criar_uma_despesa_com_uma_categoria_nulla() {
+
+    scenarioContext.getDespesaInput().setCategoriaId(null);
+
+    scenarioContext.setLancamentoDto(
+        givenRequestSpecification().criarDespesa(scenarioContext.getDespesaInput()));
+  }
+
+  @When("criar uma despesa com uma categoria invalida")
+  public void criar_uma_despesa_com_uma_categoria_invalida() {
+
+    scenarioContext.getDespesaInput().setCategoriaId(9999L);
+
+    scenarioContext.setLancamentoDto(
+        givenRequestSpecification().criarDespesa(scenarioContext.getDespesaInput()));
   }
 
   @Then("verificar a resposta do metodo criar uma despesa")
@@ -236,5 +254,15 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
 
     assertEquals(scenarioContext.getLancamentoDto().getData(), lancamentoDto.getData());
     assertTrue(lancamentoDto.getDescricao().contains(", atualizada"));
+  }
+
+  @Then("verificar a resposta do metodo criar uma despesa com uma categoria nulla ou invalida")
+  public void
+      verificar_a_resposta_do_metodo_criar_uma_despesa_com_uma_categoria_nulla_ou_invalida() {
+
+    LancamentoDto lancamentoDto =
+        givenRequestSpecification().obterDespesa(scenarioContext.getLancamentoDto().getId());
+
+    assertNotNull(lancamentoDto.getCategoria());
   }
 }
