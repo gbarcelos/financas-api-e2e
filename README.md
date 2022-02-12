@@ -7,11 +7,11 @@ Projeto de teste e2e da [API para controle de orçamento familiar](https://githu
 
 - ``Java 8``
 - ``InteliJ IDEA``
-- ``Maven``
 - ``Spring Boot``
-- ``Rest Assured``
-- ``Gherkin``
 - ``Cucumber``
+- ``Gherkin``
+- ``Maven``
+- ``Rest Assured``
 
 ## ✔️ Técnicas utilizadas
 
