@@ -8,9 +8,7 @@ import br.com.oak.financas.api.test.model.contract.response.ObjectError;
 import br.com.oak.financas.api.test.model.dto.LancamentoDto;
 import br.com.oak.financas.api.test.model.input.LancamentoInput;
 import io.cucumber.java.After;
-import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
-import io.cucumber.java.BeforeStep;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -22,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
 
-import static br.com.oak.financas.api.test.fixtures.FinancasTestFixture.buildLancamentoInput;
+import static br.com.oak.financas.api.test.fixtures.FinancasTestFixture.buildReceitaInput;
 import static br.com.oak.financas.api.test.utils.Constants.OBJECT_ERROR;
 import static br.com.oak.financas.api.test.utils.DateUtils.convertLocalDateToString;
 import static br.com.oak.financas.api.test.utils.FinancasApiPathConstants.RECEITA_V1_PATH;
@@ -33,54 +31,44 @@ public class ReceitaSteps extends FinancasApiE2eApplicationTests {
 
   @Autowired private ScenarioContext scenarioContext;
 
-  /** Method annotated with @Before executes before every scenario */
-  @Before
+  @Before(value = "@Receita")
   public void before() {
-    log.info(">>> Before scenario!");
+    scenarioContext.setLoginResponse(givenRequestSpecification().login(getUsername(), getPass()));
   }
 
-  /** Method annotated with @BeforeStep executes before every step */
-  @BeforeStep
-  public void beforeStep() {
-    log.info(">>> ");
-    log.info(">>> BeforeStep!");
-  }
-
-  /** Method annotated with @AfterStep executes after every step */
-  @AfterStep
-  public void afterStep() {
-    log.info(">>> AfterStep!");
-  }
-
-  /** Method annotated with @After executes after every scenario */
-  @After
+  @After(value = "@Receita")
   public void after() {
-    log.info(">>> cleaning up after scenario!");
 
     LancamentoDto lancamentoDto = scenarioContext.getLancamentoDto();
 
     if (Objects.nonNull(lancamentoDto)) {
-      givenRequestSpecification().excluirReceita(lancamentoDto.getId());
+      givenRequestSpecification()
+          .withToken(scenarioContext.getLoginResponse().getAccess_token())
+          .excluirReceita(lancamentoDto.getId());
       scenarioContext.setLancamentoDto(null);
     }
   }
 
   @Given("uma receita valida")
   public void uma_receita_valida() {
-    scenarioContext.setLancamentoInput(buildLancamentoInput());
+    scenarioContext.setReceitaInput(buildReceitaInput());
   }
 
   @Given("uma receita valida e criada")
   public void uma_receita_valida_e_criada() {
-    scenarioContext.setLancamentoInput(buildLancamentoInput());
+    scenarioContext.setReceitaInput(buildReceitaInput());
     scenarioContext.setLancamentoDto(
-        givenRequestSpecification().criarReceita(scenarioContext.getLancamentoInput()));
+        givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
+            .criarReceita(scenarioContext.getReceitaInput()));
   }
 
   @When("criar uma receita")
   public void criar_uma_receita() {
     scenarioContext.setLancamentoDto(
-        givenRequestSpecification().criarReceita(scenarioContext.getLancamentoInput()));
+        givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
+            .criarReceita(scenarioContext.getReceitaInput()));
   }
 
   @When("tentar criar uma receita com o conteudo como xml content type")
@@ -88,6 +76,7 @@ public class ReceitaSteps extends FinancasApiE2eApplicationTests {
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
             .contentType(ContentType.XML)
             .body("body")
@@ -104,12 +93,13 @@ public class ReceitaSteps extends FinancasApiE2eApplicationTests {
   @When("tentar criar uma receita com uma descricao nulla")
   public void tentar_criar_uma_receita_com_uma_descricao_nulla() {
 
-    scenarioContext.getLancamentoInput().setDescricao(null);
+    scenarioContext.getReceitaInput().setDescricao(null);
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
-            .body(scenarioContext.getLancamentoInput())
+            .body(scenarioContext.getReceitaInput())
             .expect()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .when()
@@ -123,12 +113,13 @@ public class ReceitaSteps extends FinancasApiE2eApplicationTests {
   @When("tentar criar uma receita com uma descricao em branco")
   public void tentar_criar_uma_receita_com_uma_descricao_em_branco() {
 
-    scenarioContext.getLancamentoInput().setDescricao("");
+    scenarioContext.getReceitaInput().setDescricao("");
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
-            .body(scenarioContext.getLancamentoInput())
+            .body(scenarioContext.getReceitaInput())
             .expect()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .when()
@@ -142,12 +133,13 @@ public class ReceitaSteps extends FinancasApiE2eApplicationTests {
   @When("tentar criar uma receita com uma data nulla")
   public void tentar_criar_uma_receita_com_uma_data_nulla() {
 
-    scenarioContext.getLancamentoInput().setData(null);
+    scenarioContext.getReceitaInput().setData(null);
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
-            .body(scenarioContext.getLancamentoInput())
+            .body(scenarioContext.getReceitaInput())
             .expect()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .when()
@@ -161,12 +153,13 @@ public class ReceitaSteps extends FinancasApiE2eApplicationTests {
   @When("tentar criar uma receita com uma data invalida")
   public void tentar_criar_uma_receita_com_uma_data_invalida() {
 
-    scenarioContext.getLancamentoInput().setData("01/20/2022");
+    scenarioContext.getReceitaInput().setData("01/20/2022");
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
-            .body(scenarioContext.getLancamentoInput())
+            .body(scenarioContext.getReceitaInput())
             .expect()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .when()
@@ -180,12 +173,13 @@ public class ReceitaSteps extends FinancasApiE2eApplicationTests {
   @When("tentar criar uma receita com um valor nullo")
   public void tentar_criar_uma_receita_com_um_valor_nullo() {
 
-    scenarioContext.getLancamentoInput().setValor(null);
+    scenarioContext.getReceitaInput().setValor(null);
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
-            .body(scenarioContext.getLancamentoInput())
+            .body(scenarioContext.getReceitaInput())
             .expect()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .when()
@@ -201,8 +195,9 @@ public class ReceitaSteps extends FinancasApiE2eApplicationTests {
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
-            .body(scenarioContext.getLancamentoInput())
+            .body(scenarioContext.getReceitaInput())
             .expect()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .when()
@@ -226,6 +221,7 @@ public class ReceitaSteps extends FinancasApiE2eApplicationTests {
             .build();
 
     givenRequestSpecification()
+        .withToken(scenarioContext.getLoginResponse().getAccess_token())
         .atualizarReceita(scenarioContext.getLancamentoDto().getId(), lancamentoInput);
   }
 
@@ -340,7 +336,9 @@ public class ReceitaSteps extends FinancasApiE2eApplicationTests {
   public void verificar_se_a_receita_foi_atualizda() {
 
     LancamentoDto lancamentoDto =
-        givenRequestSpecification().obterReceita(scenarioContext.getLancamentoDto().getId());
+        givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
+            .obterReceita(scenarioContext.getLancamentoDto().getId());
 
     assertEquals(scenarioContext.getLancamentoDto().getData(), lancamentoDto.getData());
     assertTrue(lancamentoDto.getDescricao().contains(", atualizada"));

@@ -24,6 +24,18 @@ public class FinancasApiE2eApplicationTests {
   @Value("${test.api.port}")
   private int apiPort;
 
+  @Value("${test.api.client-id}")
+  private String apiClientId;
+
+  @Value("${test.api.client-secret}")
+  private String apiClientSecret;
+
+  @Value("${test.api.username}")
+  private String username;
+
+  @Value("${test.api.pass}")
+  private String pass;
+
   protected FinancasApiRequestSpecification givenRequestSpecification() {
     return new FinancasApiRequestSpecification(getFinancasApiConfig());
   }
@@ -38,11 +50,21 @@ public class FinancasApiE2eApplicationTests {
     assertNotNull(path);
   }
 
+  protected String getUsername() {
+    return username;
+  }
+
+  protected String getPass() {
+    return pass;
+  }
+
   private TestConfig getFinancasApiConfig() {
     return TestConfig.builder()
         .basePath(BASE_FINANCAS_API_WEB_PATH)
         .baseURI(apiUri)
         .port(apiPort)
+        .clientId(apiClientId)
+        .clientSecret(apiClientSecret)
         .build();
   }
 }

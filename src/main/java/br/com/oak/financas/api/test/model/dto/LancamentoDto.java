@@ -13,4 +13,5 @@ public class LancamentoDto {
   private String descricao;
   private BigDecimal valor;
   private LocalDate data;
+  private String categoria;
 }

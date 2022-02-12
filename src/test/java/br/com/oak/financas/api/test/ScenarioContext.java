@@ -1,6 +1,8 @@
 package br.com.oak.financas.api.test;
 
+import br.com.oak.financas.api.test.model.LoginResponse;
 import br.com.oak.financas.api.test.model.dto.LancamentoDto;
+import br.com.oak.financas.api.test.model.input.DespesaInput;
 import br.com.oak.financas.api.test.model.input.LancamentoInput;
 import io.restassured.path.json.JsonPath;
 import lombok.Getter;
@@ -12,7 +14,9 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 public class ScenarioContext {
+  private LoginResponse loginResponse;
   private JsonPath jsonPath;
-  private LancamentoInput lancamentoInput;
+  private LancamentoInput receitaInput;
+  private DespesaInput despesaInput;
   private LancamentoDto lancamentoDto;
 }
