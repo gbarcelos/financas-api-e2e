@@ -3,6 +3,8 @@ Projeto de teste e2e da [API para controle de orçamento familiar](https://githu
 
 ## ✔️ Tecnologias utilizadas
 
+<img alt="Java" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original-wordmark.svg" width="50" height="50"/> <img alt="IntelliJ" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/intellij/intellij-original.svg" width="50" height="50"/> <img alt="Spring" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original-wordmark.svg"  width="50" height="50"/> <img  alt="Cucumber" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cucumber/cucumber-plain.svg"  width="50" height="50"/>
+
 - ``Java 8``
 - ``InteliJ IDEA``
 - ``Maven``
