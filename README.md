@@ -1,3 +1,5 @@
+![thumbnail-financas-api-e2e](https://user-images.githubusercontent.com/13111308/153711901-280a2ced-2e9a-4c73-a2a4-11c9ef4fb696.png)
+
 # Resumo do projeto
 Projeto de teste e2e da [API para controle de orçamento familiar](https://github.com/gbarcelos/financas-api).
 
