@@ -10,4 +10,6 @@ public class TestConfig {
   private String baseURI;
   private String basePath;
   private int port;
+  private String clientId;
+  private String clientSecret;
 }

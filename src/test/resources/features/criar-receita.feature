@@ -1,3 +1,4 @@
+@Receita
 Feature: Criar uma receita
 
   Scenario: Criar uma receita valida

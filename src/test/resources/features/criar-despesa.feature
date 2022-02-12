@@ -1,3 +1,4 @@
+@Despesa
 Feature: Criar uma despesa
 
   Scenario: Criar uma despesa valida
@@ -34,3 +35,13 @@ Feature: Criar uma despesa
     Given uma despesa valida
     When tentar criar uma despesa com um valor nullo
     Then verificar a resposta de valor obrigatorio
+
+  Scenario: Criar uma despesa com uma categoria nulla
+    Given uma despesa valida
+    When criar uma despesa com uma categoria nulla
+    Then verificar a resposta do metodo criar uma despesa com uma categoria nulla ou invalida
+
+  Scenario: Criar uma despesa com uma categoria invalida
+    Given uma despesa valida
+    When criar uma despesa com uma categoria invalida
+    Then verificar a resposta do metodo criar uma despesa com uma categoria nulla ou invalida
