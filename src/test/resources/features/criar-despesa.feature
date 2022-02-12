@@ -1,3 +1,4 @@
+@Despesa
 Feature: Criar uma despesa
 
   Scenario: Criar uma despesa valida

@@ -1,3 +1,4 @@
+@Receita
 Feature: Alterar uma receita
 
   Scenario: Criar uma receita e depois atualiza-la

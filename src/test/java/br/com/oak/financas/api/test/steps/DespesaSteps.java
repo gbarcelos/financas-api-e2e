@@ -7,9 +7,7 @@ import br.com.oak.financas.api.test.model.contract.response.ErrorResponse;
 import br.com.oak.financas.api.test.model.dto.LancamentoDto;
 import br.com.oak.financas.api.test.model.input.LancamentoInput;
 import io.cucumber.java.After;
-import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
-import io.cucumber.java.BeforeStep;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -31,34 +29,20 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
 
   @Autowired private ScenarioContext scenarioContext;
 
-  /** Method annotated with @Before executes before every scenario */
-  @Before
+  @Before(value = "@Despesa")
   public void before() {
-    log.info(">>> Before scenario!");
+    scenarioContext.setLoginResponse(givenRequestSpecification().login(getUsername(), getPass()));
   }
 
-  /** Method annotated with @BeforeStep executes before every step */
-  @BeforeStep
-  public void beforeStep() {
-    log.info(">>> ");
-    log.info(">>> BeforeStep!");
-  }
-
-  /** Method annotated with @AfterStep executes after every step */
-  @AfterStep
-  public void afterStep() {
-    log.info(">>> AfterStep!");
-  }
-
-  /** Method annotated with @After executes after every scenario */
-  @After
+  @After(value = "@Despesa")
   public void after() {
-    log.info(">>> cleaning up after scenario!");
 
     LancamentoDto lancamentoDto = scenarioContext.getLancamentoDto();
 
     if (Objects.nonNull(lancamentoDto)) {
-      givenRequestSpecification().excluirDespesa(lancamentoDto.getId());
+      givenRequestSpecification()
+          .withToken(scenarioContext.getLoginResponse().getAccess_token())
+          .excluirDespesa(lancamentoDto.getId());
       scenarioContext.setLancamentoDto(null);
     }
   }
@@ -72,13 +56,17 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
   public void uma_despesa_valida_e_criada() {
     scenarioContext.setDespesaInput(buildDespesaInput());
     scenarioContext.setLancamentoDto(
-        givenRequestSpecification().criarDespesa(scenarioContext.getDespesaInput()));
+        givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
+            .criarDespesa(scenarioContext.getDespesaInput()));
   }
 
   @When("criar uma despesa")
   public void criar_uma_despesa() {
     scenarioContext.setLancamentoDto(
-        givenRequestSpecification().criarDespesa(scenarioContext.getDespesaInput()));
+        givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
+            .criarDespesa(scenarioContext.getDespesaInput()));
   }
 
   @When("tentar criar uma despesa com a mesma descricao e no mesmo mes")
@@ -86,6 +74,7 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
             .body(scenarioContext.getDespesaInput())
             .expect()
@@ -105,6 +94,7 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
             .body(scenarioContext.getDespesaInput())
             .expect()
@@ -124,6 +114,7 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
             .body(scenarioContext.getDespesaInput())
             .expect()
@@ -143,6 +134,7 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
             .body(scenarioContext.getDespesaInput())
             .expect()
@@ -162,6 +154,7 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
             .body(scenarioContext.getDespesaInput())
             .expect()
@@ -181,6 +174,7 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
 
     JsonPath jsonPath =
         givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
             .returnRequestSpecification()
             .body(scenarioContext.getDespesaInput())
             .expect()
@@ -206,6 +200,7 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
             .build();
 
     givenRequestSpecification()
+        .withToken(scenarioContext.getLoginResponse().getAccess_token())
         .atualizarDespesa(scenarioContext.getLancamentoDto().getId(), lancamentoInput);
   }
 
@@ -215,7 +210,9 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
     scenarioContext.getDespesaInput().setCategoriaId(null);
 
     scenarioContext.setLancamentoDto(
-        givenRequestSpecification().criarDespesa(scenarioContext.getDespesaInput()));
+        givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
+            .criarDespesa(scenarioContext.getDespesaInput()));
   }
 
   @When("criar uma despesa com uma categoria invalida")
@@ -224,7 +221,9 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
     scenarioContext.getDespesaInput().setCategoriaId(9999L);
 
     scenarioContext.setLancamentoDto(
-        givenRequestSpecification().criarDespesa(scenarioContext.getDespesaInput()));
+        givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
+            .criarDespesa(scenarioContext.getDespesaInput()));
   }
 
   @Then("verificar a resposta do metodo criar uma despesa")
@@ -250,7 +249,9 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
   public void verificar_se_a_despesa_foi_atualizda() {
 
     LancamentoDto lancamentoDto =
-        givenRequestSpecification().obterDespesa(scenarioContext.getLancamentoDto().getId());
+        givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
+            .obterDespesa(scenarioContext.getLancamentoDto().getId());
 
     assertEquals(scenarioContext.getLancamentoDto().getData(), lancamentoDto.getData());
     assertTrue(lancamentoDto.getDescricao().contains(", atualizada"));
@@ -261,7 +262,9 @@ public class DespesaSteps extends FinancasApiE2eApplicationTests {
       verificar_a_resposta_do_metodo_criar_uma_despesa_com_uma_categoria_nulla_ou_invalida() {
 
     LancamentoDto lancamentoDto =
-        givenRequestSpecification().obterDespesa(scenarioContext.getLancamentoDto().getId());
+        givenRequestSpecification()
+            .withToken(scenarioContext.getLoginResponse().getAccess_token())
+            .obterDespesa(scenarioContext.getLancamentoDto().getId());
 
     assertNotNull(lancamentoDto.getCategoria());
   }
