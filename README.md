@@ -15,7 +15,7 @@ Projeto de teste e2e da [API para controle de orçamento familiar](https://githu
 
 ## ✔️ Técnicas utilizadas
 
-- ``Cada funcionalidade e seus critérios de aceite estão descritos nos arquivos de feature do Gherkin, que sabe interpretar a linguagem natural, e o Cucumber foi utilizado para automatizar todos os critérios de aceite.``
+- ``Cada funcionalidade está descrita nos arquivos de feature do Gherkin, que sabe interpretar a linguagem natural, e o Cucumber automatiza todos os critérios de aceite.``
 
 ## 📁 Acesso ao projeto
 Você pode acessar os arquivos do projeto de teste e2e clicando [aqui](https://github.com/gbarcelos/financas-api-e2e).
