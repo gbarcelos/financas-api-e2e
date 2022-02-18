@@ -23,4 +23,4 @@ Projeto de teste e2e da [API para controle de orçamento familiar](https://githu
 Você pode acessar os arquivos do projeto de teste e2e clicando [aqui](https://github.com/gbarcelos/financas-api-e2e).
 
 ## 📁 Acesso ao projeto a ser testado
-Você pode acessar os arquivos do projeto clicando [aqui](https://github.com/gbarcelos/financas-api/tree/main/src/main/java/br/com/oak/financas/api).
+Você pode acessar a documentação do projeto clicando [aqui](https://oak-financas-api.herokuapp.com).
