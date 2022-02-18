@@ -19,8 +19,5 @@ Projeto de teste e2e da [API para controle de orçamento familiar](https://githu
 
 - ``Cada funcionalidade está descrita nos arquivos de feature do Gherkin, que sabe interpretar a linguagem natural, e o Cucumber automatiza todos os critérios de aceite.``
 
-## 📁 Acesso ao projeto
-Você pode acessar os arquivos do projeto de teste e2e clicando [aqui](https://github.com/gbarcelos/financas-api-e2e).
-
 ## 📁 Acesso ao projeto a ser testado
 Você pode acessar a documentação do projeto clicando [aqui](https://oak-financas-api.herokuapp.com).
